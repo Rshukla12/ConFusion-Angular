@@ -60,7 +60,7 @@ export class DishdetailComponent implements OnInit {
 
   createForm(){
     this.commentForm = this.fb.group({
-      author:  ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
+      author: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
       rating: [0, Validators.required],
       comment: ['', [Validators.required, Validators.minLength(2)]] 
     });
@@ -94,6 +94,7 @@ export class DishdetailComponent implements OnInit {
   onSubmit(){
     this.comment = this.commentForm.value;
     console.log(this.comment);
+    this.dish.comments.push(this.comment);
     this.commentForm.reset({
       author: '',
       ratings: 0,
