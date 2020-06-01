@@ -38,6 +38,7 @@ import { LeaderService } from './services/leader.service';
 import { baseURL } from './shared/baseurl';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     HomeComponent,
     AboutComponent,
     ContactComponent,
-    LoginComponent
+    LoginComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserAnimationsModule,
