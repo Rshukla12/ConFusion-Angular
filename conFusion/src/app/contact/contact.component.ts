@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
-import { flyInOut } from '../animations/app.animations';
+import { flyInOut, expand } from '../animations/app.animations';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
@@ -13,7 +14,8 @@ import { flyInOut } from '../animations/app.animations';
     'style': 'display: block;'
     },
     animations: [
-      flyInOut()
+      flyInOut(),
+      expand()
     ]
 })
 export class ContactComponent implements OnInit {
@@ -21,7 +23,11 @@ export class ContactComponent implements OnInit {
   @ViewChild('fform') feedbackFormDirective;
   feedbackForm: FormGroup;
   feedback: Feedback;
-  contactType= ContactType;
+  feedbackcopy: Feedback;
+  errMess: string;
+  submitted = null;
+  showForm = true;
+  contactType = ContactType;
 
   formErrors = {
     'firstname': '',
@@ -52,7 +58,9 @@ export class ContactComponent implements OnInit {
   };
 
 
-  constructor(private fb:FormBuilder) {
+  constructor(private fb:FormBuilder,
+    @Inject('BaseURL') private baseURL,
+    private feedbackService: FeedbackService ) {
     this.createForm();
    }
 
@@ -78,6 +86,31 @@ export class ContactComponent implements OnInit {
 
 }
 
+
+
+onSubmit(){
+  this.feedback = this.feedbackForm.value;
+  console.log(this.feedback);
+  this.showForm = false;
+  this.feedbackService.submitFeedback(this.feedback)
+    .subscribe(feedback => {
+      this.submitted = feedback;
+      this.feedback = null;
+      setTimeout(() => { this.submitted = null; this.showForm = true; }, 5000);
+    },
+      error => console.log(error.status, error.message));
+  this.feedbackForm.reset({
+    firsname: '',
+    lastname: '',
+    telnum: 0,
+    email: '',
+    agree: false,
+    contacttype: 'None',
+    message:''
+  });
+  this.feedbackFormDirective.resetForm();
+}
+
 onValueChanged(data?: any) {
   if (!this.feedbackForm) { return; }
   const form = this.feedbackForm;
@@ -98,20 +131,5 @@ onValueChanged(data?: any) {
   }
 }
 
-
-onSubmit(){
-  this.feedback = this.feedbackForm.value;
-  console.log(this.feedback);
-  this.feedbackForm.reset({
-    firsname: '',
-    lastname: '',
-    telnum: 0,
-    email: '',
-    agree: false,
-    contacttype: 'None',
-    message:''
-  });
-  this.feedbackFormDirective.resetForm();
 }
 
-}
