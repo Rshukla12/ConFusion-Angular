@@ -6,7 +6,7 @@
      fxLayoutGap="10px">
 
   <mat-card fxFlex>
-    <div *ngIf="dish" >
+    <div *ngIf="dish" [@expand]>
       <mat-card-header>
         <div mat-card-avatar></div>
         <mat-card-title>
@@ -29,7 +29,7 @@
   </mat-card>
   
   <mat-card fxFlex>
-    <div *ngIf="promotion">
+    <div *ngIf="promotion" [@expand]>
       <mat-card-header>
         <div mat-card-avatar></div>
         <mat-card-title>
@@ -42,13 +42,13 @@
         </p>
       </mat-card-content>
     </div>
-    <div [hidden]="promotion">
+    <div [hidden]="promotion" [@expand]>
       <mat-spinner></mat-spinner><h4>Loading ...Please Wait!</h4>
     </div>
   </mat-card>
 
   <mat-card fxFlex>
-    <div  *ngIf="leader" >
+    <div  *ngIf="leader" [@expand]>
       <mat-card-header>
         <mat-card-title>
           <h3>{{leader.name | uppercase}}</h3>
